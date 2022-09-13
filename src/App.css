@@ -1,0 +1,90 @@
+@import  '@coreui/coreui/dist/css/coreui.min.css';
+.App {
+
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+tr{
+  /* border-radius:  5px; */
+  /* border: solid 1px #63d1f0; */
+  background-color: #f2f2f2;
+}
+
+th, td {
+  text-transform: capitalize;
+  border: 1px solid #ddd;
+  padding: 8px; 
+}
+
+form{
+  border: 1px solid white;  
+  border-radius: 3rem;
+  background-color: #f2f2f287;
+    padding: 3rem;
+  margin: 1rem;
+}
+
+.page > li {
+  display: inline;
+  padding: 1rem;
+  background-color: #ddd
+}
+
+li> a{
+  text-decoration: none;
+ 
+}
+
+.selected{
+  background-color: rgb(193, 185, 185)
+}
+
+ul{
+  /* position: absolute;
+  bottom: 0;
+  left: 25%; */
+  margin: 5rem 0;
+}
+.breadcrumb{
+  margin: 2rem ;
+}
+@media (max-width: 1475px){
+  form{
+    padding: 2rem;
+  }
+}
