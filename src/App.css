@@ -71,7 +71,7 @@ li> a{
 }
 
 .selected{
-  background-color: rgb(193, 185, 185)
+  background-color: rgb(193, 185, 185) !important
 }
 
 ul{
