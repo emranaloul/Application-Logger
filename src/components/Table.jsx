@@ -14,9 +14,11 @@ const Table = () => {
     const [filter, setFilter] = useState({})
     const [date, setDate] = useState({})
     const [loading, setLoading] = useState(true)
+    const [selectedPage,setSelectedPage] = useState(0)
 
     useEffect(() => {
         axios.get(' https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f?logId=365001413757985').then(({ data }) => {
+            console.log("🚀 ~ file: Table.jsx ~ line 22 ~ axios.get ~ data.result.auditLog", data.result.auditLog)
             setPageCount(Math.ceil(data.result.auditLog.length / 10))
             setResults(() => data.result.auditLog.slice(0, 10))
             setApplicationTypes(() => data.result.auditLog.map((auditLog => auditLog.applicationType)).filter((v, i, a) => i === a.indexOf(v) && v).map(v => { return { label: v, value: v } }))
@@ -69,7 +71,7 @@ const Table = () => {
     const handlePageClick = (event) => {
         const newOffset = (event.selected * 10)
         setLoading(true)
-
+        setSelectedPage(event.selected)
         let _data = []
         axios.get('https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f?logId=365001413757985').then(({ data }) => {
             _data = data.result.auditLog;
@@ -114,7 +116,6 @@ const Table = () => {
     const onChange = e => {
         let value = {}
         value[e.target.id] = e.target.id === 'applicationId' ? Number(e.target.value) : e.target.value
-        console.log("🚀 ~ file: Table.jsx ~ line 144 ~ onChange ~ value", value)
         setFilter(e => { return { ...e, ...value } })
     }
     return (
@@ -204,6 +205,8 @@ const Table = () => {
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
                 className='page'
+                marginPagesDisplayed={2}
+                forcePage={selectedPage}
             />}
             {loading && <CSpinner color='primary' />}
         </div>
