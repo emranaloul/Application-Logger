@@ -6,19 +6,21 @@ import { cilSortDescending, cilSortAscending } from '@coreui/icons';
 import ReactPaginate from 'react-paginate';
 
 const Table = () => {
+    const dateInit = { from: '', to: '' }
+    const filterInit = { applicationId: '', applicationType: 'All', actionType: 'All', user: '' }
     const [results, setResults] = useState([])
     const [orderBy, setOrderBy] = useState({ value: '', type: '' })
     const [actionTypes, setActionTypes] = useState([])
     const [applicationTypes, setApplicationTypes] = useState([])
     const [pageCount, setPageCount] = useState(0);
-    const [filter, setFilter] = useState({})
-    const [date, setDate] = useState({})
+    const [filter, setFilter] = useState(filterInit)
+    const [date, setDate] = useState(dateInit)
     const [loading, setLoading] = useState(true)
-    const [selectedPage,setSelectedPage] = useState(0)
+    const [selectedPage, setSelectedPage] = useState(0)
+
 
     useEffect(() => {
         axios.get(' https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f?logId=365001413757985').then(({ data }) => {
-            console.log("🚀 ~ file: Table.jsx ~ line 22 ~ axios.get ~ data.result.auditLog", data.result.auditLog)
             setPageCount(Math.ceil(data.result.auditLog.length / 10))
             setResults(() => data.result.auditLog.slice(0, 10))
             setApplicationTypes(() => data.result.auditLog.map((auditLog => auditLog.applicationType)).filter((v, i, a) => i === a.indexOf(v) && v).map(v => { return { label: v, value: v } }))
@@ -115,8 +117,13 @@ const Table = () => {
     const defaultValue = { label: 'All', value: null };
     const onChange = e => {
         let value = {}
-        value[e.target.id] = e.target.id === 'applicationId' ? Number(e.target.value) : e.target.value
+        value[e.target.id] = e.target.id === 'applicationId' ? Number(e.target.value)? Number(e.target.value): e.target.value : e.target.value
         setFilter(e => { return { ...e, ...value } })
+    }
+
+    const clearFilter = () => {
+        setFilter(filterInit)
+        setDate(dateInit)
     }
     return (
         <div>
@@ -129,36 +136,48 @@ const Table = () => {
                 <CRow >
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>Employee Name</CFormLabel>
-                        <CFormInput id="exampleFormControlInput1" placeholder="e.g: Admin, User" aria-describedby="exampleFormControlInputHelpInline" />
+                        <CFormInput id="exampleFormControlInput1" value={filter.user} placeholder="e.g: Admin, User" aria-describedby="exampleFormControlInputHelpInline" id='user' onChange={onChange}/>
 
                     </CCol>
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>Action Type</CFormLabel>
-                        <CFormSelect aria-label="Default select example" options={[defaultValue, ...actionTypes]} id="actionType" onChange={onChange} />
+                        <CFormSelect aria-label="Default select example" options={[defaultValue, ...actionTypes]} id="actionType" value={filter.actionType} onChange={onChange} />
 
                     </CCol >
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>Application Type</CFormLabel >
-                        <CFormSelect aria-label="Default select example" options={[defaultValue, ...applicationTypes]} id="applicationType" onChange={onChange} />
+                        <CFormSelect aria-label="Default select example" options={[defaultValue, ...applicationTypes]} value={filter.applicationType} id="applicationType" onChange={onChange} />
 
 
                     </CCol>
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>From Date</CFormLabel>
-                        <input className='form-control' type="date" onChange={(r) => setDate(e => { return { ...e, from: r.target.value } })} />
+                        <input className='form-control' type="date" value={date.from} onChange={(r) => setDate(e => { return { ...e, from: r.target.value } })} />
                     </CCol>
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>To Date</CFormLabel>
-                        <input type="date" className='form-control' onChange={(r) => setDate(e => { return { ...e, to: r.target.value } })} />
+                        <input type="date" className='form-control' value={date.to} onChange={(r) => setDate(e => { return { ...e, to: r.target.value } })} />
                     </CCol>
                     <CCol xl={2} lg='auto' md='auto'>
                         <CFormLabel>Application ID</CFormLabel>
-                        <CFormInput id="applicationId" placeholder="e.g: 131566/415161" aria-describedby="exampleFormControlInputHelpInline" onChange={onChange} />
+                        <CFormInput id="applicationId"  placeholder="e.g: 131566/415161" value={filter.applicationId} aria-describedby="exampleFormControlInputHelpInline" onChange={onChange} />
 
                     </CCol>
-                    <CCol className="align-self-end" xl='auto' lg='auto' md='auto'>
-
+                    <CCol className="align-self-end" xl='auto' lg='auto' md='auto' sm='auto' xs='auto' style={{margin: '1rem 0'}}>
+                        <CRow xs={{ gutterY: 2 }}>
+                            <CCol xl={12} >
                         <CButton color='primary' type='submit'>Search Logger</CButton>
+
+                            </CCol>
+                            <CCol xl={12}>
+
+                        <CButton style={{width: '50%'}} type='button' color='secondary' onClick={clearFilter}>Clear Filter</CButton>
+                            </CCol>
+                        </CRow>
+
+                    </CCol>
+                    <CCol className="align-self-end" xl='auto' lg='auto' md='auto' style={{margin: '1rem 0'}}>
+
                     </CCol>
                 </CRow>
 
