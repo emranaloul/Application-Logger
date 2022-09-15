@@ -136,7 +136,7 @@ const Table = () => {
                 <CRow >
                     <CCol xl='auto' lg='auto' md='auto'>
                         <CFormLabel>Employee Name</CFormLabel>
-                        <CFormInput id="exampleFormControlInput1" value={filter.user} placeholder="e.g: Admin, User" aria-describedby="exampleFormControlInputHelpInline" id='user' onChange={onChange}/>
+                        <CFormInput id="user" value={filter.user} placeholder="e.g: Admin, User" aria-describedby="exampleFormControlInputHelpInline" onChange={onChange}/>
 
                     </CCol>
                     <CCol xl='auto' lg='auto' md='auto'>
