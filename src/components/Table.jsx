@@ -18,8 +18,7 @@ const Table = () => {
     const [loading, setLoading] = useState(true)
     const [selectedPage, setSelectedPage] = useState(0)
 
-
-    useEffect(() => {
+    const getData = () => {
         axios.get(' https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f?logId=365001413757985').then(({ data }) => {
             setPageCount(Math.ceil(data.result.auditLog.length / 10))
             setResults(() => data.result.auditLog.slice(0, 10))
@@ -27,6 +26,10 @@ const Table = () => {
             setActionTypes(() => data.result.auditLog.map((auditLog => auditLog.actionType)).filter((v, i, a) => i === a.indexOf(v) && v).map(v => { return { label: v, value: v } }))
             setLoading(false)
         })
+    }
+
+    useEffect(() => {
+       getData()
     }, [])
     const headers = [{ title: 'Log ID', key: 'logId' }, { title: 'Application Type', key: 'applicationType' }, { title: 'application ID', key: 'applicationId' }, { title: 'action', key: 'actionType' }, { title: 'action details', key: null }, { title: 'date:time', key: 'creationTimestamp' }]
 
@@ -122,8 +125,10 @@ const Table = () => {
     }
 
     const clearFilter = () => {
+        setLoading(true)
         setFilter(filterInit)
         setDate(dateInit)
+        getData()
     }
     return (
         <div>
